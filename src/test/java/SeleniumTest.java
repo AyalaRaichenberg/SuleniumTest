@@ -8,6 +8,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.util.concurrent.TimeUnit;
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
 
+@Listeners({PageObjects.Listeners.class})
 public class SeleniumTest extends BaseClass {
 
     LoginPage login;
@@ -34,28 +36,29 @@ public class SeleniumTest extends BaseClass {
     }
 
     @Test
-    public void loginTest() {
-        try {
-            login.loginAction("Ayala Raichenberg", "Ayalar@8648");
-            homePage.gotoStore();
-            booksStorePage.searchAction("git Pocket");
-            assertTrue(booksStorePage.bookAmount() == 1);
-            booksStorePage.removeSearch();
-            booksStorePage.searchAction("VerySoft");
-            assertTrue(booksStorePage.bookAmount() == 0);
-            assertTrue(booksStorePage.noElementIsDisplayed());
-            booksStorePage.removeSearch();
-            booksStorePage.printBookList();
-        } catch (Exception e) {
-            System.out.println("ERROR: " + e);
-            fail("ERROR: " + e);
-        }
+    public void test01() {
+        login.loginAction("Ayala Raichenberg", "Ayalar@8648");
+        homePage.gotoStore();
+    }
 
-        catch (AssertionError a){
-            System.out.println("ERROR: " + a);
-            fail("ERROR: " + a);
-        }
+    @Test
+    public void test02() {
+        booksStorePage.searchAction("git Pocket");
+        assertTrue(booksStorePage.bookAmount() == 1);
+    }
 
+    @Test
+    public void test03() {
+        booksStorePage.removeSearch();
+        booksStorePage.searchAction("VerySoft");
+        assertTrue(booksStorePage.bookAmount() == 0);
+        assertTrue(booksStorePage.noElementIsDisplayed());
+    }
+
+    @Test
+    public void test04() {
+        booksStorePage.removeSearch();
+        booksStorePage.printBookList();
     }
 
     @AfterClass
